@@ -3,65 +3,56 @@ using namespace std;
 
 typedef int ElemType;
 
-typedef struct LNode
-{
-    ElemType data;
-    struct LNode *next;
-}LNode, *LinkList;
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+            val(x), next(NULL) {
+    }
+};
 
 // 创建空链表
-LinkList CreateList(LinkList L)
+ListNode* CreateList(ListNode* L)
 {
-    L = (LinkList)malloc(sizeof(LNode));
+    L = (ListNode*)malloc(sizeof(ListNode));
     L->next = NULL;
     
     return L;
 }
 
-LNode *CreateNode(ElemType x)
-{
-    LNode *s;
-    s = (LNode *)malloc(sizeof(LNode));
-    s->data = x;
-    s->next = NULL;
-    
-    return s;
-}
-
 // 在头结点插入元素
-LinkList List_HeadInsert(LinkList L, int x)
+ListNode* List_HeadInsert(ListNode* L, int x)
 {
-    LNode *s;
+    ListNode *s;
     
-    s = (LNode*)malloc(sizeof(LNode));
-    s->data = x;
+    s = new ListNode(x);
     s->next = L->next;
     L->next = s;
+    delete s;
     
     return L;
 }
 
 // 在尾结点插入元素
-LinkList List_TailInsert(LinkList L, int x)
+ListNode* List_TailInsert(ListNode* L, int x)
 {
-    LNode *s, *r = L;
+    ListNode *s, *r = L;
     
     while(r->next != NULL)
         r = r->next;
     
-    s = (LNode*)malloc(sizeof(LNode));
-    s->data = x;
-    s->next = NULL;
+    s = new ListNode(x);
     r->next = s;
+    delete s;
     
     return L;
 }
 
 // 按序号查找结点值
-LNode *GetElem(LinkList L, int i)
+ListNode *GetElem(ListNode* L, int i)
 {
     int j = 1;
-    LNode *p = L->next;
+    ListNode *p = L->next;
     
     if(i == 0)  return L;
     if(i < 0)   return NULL;
@@ -74,10 +65,10 @@ LNode *GetElem(LinkList L, int i)
 }
 
 // 按值查找
-LNode *LocateElem(LinkList L, ElemType e)
+ListNode *LocateElem(ListNode* L, ElemType e)
 {
-    LNode *p = L->next;
-    while (p != NULL && p->data != e)
+    ListNode *p = L->next;
+    while (p != NULL && p->val != e)
     {
         p = p->next;
     }
@@ -85,9 +76,9 @@ LNode *LocateElem(LinkList L, ElemType e)
 }
 
 // 将结点插入到指定位置
-LinkList Insert(LinkList L, LNode *s, int i)
+ListNode* Insert(ListNode* L, ListNode *s, int i)
 {
-    LNode *p = GetElem(L, i-1);
+    ListNode *p = GetElem(L, i-1);
     s->next = p->next;
     p->next = s;
     
@@ -95,13 +86,28 @@ LinkList Insert(LinkList L, LNode *s, int i)
 }
 
 // 删除第i个结点
-LinkList DeleteNode(LinkList L, int i)
+ListNode* DeleteNode(ListNode* L, int i)
 {
-    LNode *p = GetElem(L, i-1);
-    LNode *q = p->next;
+    ListNode *p = GetElem(L, i-1);
+    ListNode *q = p->next;
     p->next = q->next;
     free(q);
     return L;
+}
+
+// 反转链表
+ListNode* ReverseList(ListNode* pHead) {
+    ListNode *tmp = NULL;
+    ListNode *cur = NULL;
+         
+    while(pHead != NULL)
+    {
+        tmp = pHead->next;
+        pHead->next = cur;
+        cur = pHead;
+        pHead = tmp;
+    }
+    return cur;
 }
 
 int main()
