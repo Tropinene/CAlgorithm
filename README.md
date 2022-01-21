@@ -6,7 +6,10 @@
 
 * 数据结构部分：
   * List
+  * Stack
+  * Queue
 * 算法：
+  * Bracket Matching (based on Stack)
 * 题解：
   * 剑指Offer
     * List
